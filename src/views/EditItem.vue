@@ -2,7 +2,7 @@
   <v-container>
     <h1>Edit item</h1>
 
-    <v-form @submit.prevent="createItem">
+    <v-form @submit.prevent="submitItem">
       <v-text-field label="Item name" outlined v-model="item.name" required />
 
       <v-textarea
@@ -48,7 +48,9 @@
 
       <v-checkbox v-model="item.isBase" label="Base item?" />
 
-      <v-btn color="primary" depressed type="submit">Create</v-btn>
+      <v-btn color="primary" depressed type="submit">{{
+        $route.params.uid ? "Update" : "Create"
+      }}</v-btn>
     </v-form>
 
     <pre>{{ item }}</pre>
@@ -84,30 +86,36 @@ export default {
     };
   },
   created() {
-    // db.collection("clothes")
-    //   .add({
-    //     name: "Blue shirt",
-    //     description: "sewetwet",
-    //     seasons: ["summer", "spring", "fall", "winter"],
-    //   })
-    //   .then(function(docRef) {
-    //     console.log("Document written with ID: ", docRef.id);
-    //   })
-    //   .catch(function(error) {
-    //     console.error("Error adding document: ", error);
-    //   });
+    if (this.$route.params.uid) {
+      db.collection("clothes")
+        .doc(this.$route.params.uid)
+        .get()
+        .then((doc) => (this.item = doc.data()))
+        .catch((error) => console.log("Error!", error));
+    }
   },
   methods: {
-    createItem() {
+    async submitItem() {
       console.log("yes hi!");
-      db.collection("clothes")
-        .add(this.item)
-        .then(function(docRef) {
-          console.log("Document written: ", docRef.id);
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
+      if (!this.$route.params.uid) {
+        await db
+          .collection("clothes")
+          .add(this.item)
+          .then(function(docRef) {
+            console.log("Document written: ", docRef.id);
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
+      } else {
+        await db
+          .collection("clothes")
+          .doc(this.$route.params.uid)
+          .set(this.item)
+          .then(() => console.log("Success!"))
+          .catch((error) => console.log("Error!", error));
+      }
+      this.$router.push({ name: "Home" });
     },
   },
 };

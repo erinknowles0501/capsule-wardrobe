@@ -16,6 +16,11 @@ const routes = [
     name: "Create",
     component: EditItem,
   },
+  {
+    path: "/edit/:uid",
+    name: "EditItem",
+    component: EditItem,
+  },
   // {
   //   path: "/about",
   //   name: "About",
