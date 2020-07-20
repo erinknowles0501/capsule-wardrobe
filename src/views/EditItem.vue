@@ -46,6 +46,8 @@
         >
       </v-chip-group>
 
+      <v-select v-model="item.type" :items="types" />
+
       <v-checkbox v-model="item.isBase" label="Base item?" />
 
       <v-btn color="primary" depressed type="submit">{{
@@ -79,10 +81,12 @@ export default {
         description: "",
         seasons: [],
         moods: [],
+        type: null,
         isBase: false,
       },
 
-      moods: ["classy", "sporty", "comfy", "basic"],
+      moods: ["classy", "sporty", "comfy", "basic", "fun", "work"],
+      types: ["top", "bottom", "dress", "shoes", "accessory", "cover", "other"],
     };
   },
   created() {

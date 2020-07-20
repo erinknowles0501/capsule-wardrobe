@@ -3,7 +3,7 @@
     <v-app-bar app color="primary" dark>
       <v-btn text :to="{ name: 'Home' }">My closet</v-btn>
       <v-btn text :to="{ name: 'Create' }">Add item</v-btn>
-      <v-btn text>My capsule</v-btn>
+      <v-btn text :to="{ name: 'Capsule' }">My capsule</v-btn>
     </v-app-bar>
 
     <v-main>

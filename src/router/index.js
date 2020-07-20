@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import EditItem from "../views/EditItem.vue";
+import MyCapsule from "../views/MyCapsule.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     path: "/edit/:uid",
     name: "EditItem",
     component: EditItem,
+  },
+  {
+    path: "/capsule",
+    name: "Capsule",
+    component: MyCapsule,
   },
   // {
   //   path: "/about",
