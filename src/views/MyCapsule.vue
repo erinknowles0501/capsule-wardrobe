@@ -27,6 +27,7 @@
       :class="`season display-${key}`"
     >
       <v-card flat class="season-info subtitle-2">
+        <p>{{ key }}</p>
         <p>
           <b>tops:</b> {{ season.filter((item) => item.type === "top").length }}
         </p>
@@ -109,21 +110,19 @@ export default {
         });
       });
 
+    await db
+      .collection("capsules")
+      .doc("erin")
+      .get()
+      .then((doc) => {
+        //  doc.data().fore
+        this.capsule.spring = doc.data().spring;
+      })
+      .catch((err) => console.log("err", err));
+
     this.loading = false;
   },
   methods: {
-    // getSeasonInfo(seasonItems) {
-    //   let seasonInfo = {
-    //     top: 0,
-    //     bottom: 0,
-    //     dress: 0,
-    //     shoes: 0,
-    //   };
-    //   seasonItems.forEach((item) => {
-    //     seasonInfo[item.type]++;
-    //   });
-    //   return seasonInfo;
-    // },
     isUsed(item) {
       // TODO: Bonus points if you can do this with a reduce
       return (
@@ -142,6 +141,35 @@ export default {
     },
     saveCapsule() {
       console.log(this.capsule);
+
+      let capsuleItems = {
+        spring: [],
+        summer: [],
+        winter: [],
+        fall: [],
+        base: [],
+      };
+
+      for (const season in this.capsule) {
+        console.log(this.capsule[season]);
+        this.capsule[season].forEach((item) => {
+          capsuleItems[season].push(item.id);
+        });
+      }
+
+      console.log(capsuleItems);
+
+      db.collection("capsules")
+        .doc("erin")
+        .set({
+          spring: capsuleItems.spring,
+          summer: capsuleItems.summer,
+          fall: capsuleItems.fall,
+          winter: capsuleItems.winter,
+          base: capsuleItems.base,
+        })
+        .then(() => console.log("Success"))
+        .catch((err) => console.log("error", err));
     },
   },
 };
