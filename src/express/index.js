@@ -4,13 +4,13 @@ const cors = require("cors");
 import db from "@/mongoose";
 
 db.once("open", (_) => {
-  console.log("Database connected:");
+  console.log("Database connected");
 });
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: "http://localhost:8080",
 };
 
 app.use(cors(corsOptions));
@@ -26,21 +26,21 @@ app.get(/.*/, (req, res) =>
 );
 
 // simple route
-app.get("/test", (req, res) => {
-  res.json({ message: "Welcome to application." });
-  //   const newItem = new ItemModel({
-  //     name: "sdgsdgsdg",
-  //     description: "msdfsdfsdfale",
-  //   });
-  //   newItem.save(function(error, document) {
-  //     if (error) console.error(error);
-  //     console.log(document);
-  //   });
-  //   res.json(newItem);
-});
+// app.get("/test", (req, res) => {
+//   res.json({ message: "Welcome to application." });
+//   //   const newItem = new ItemModel({
+//   //     name: "sdgsdgsdg",
+//   //     description: "msdfsdfsdfale",
+//   //   });
+//   //   newItem.save(function(error, document) {
+//   //     if (error) console.error(error);
+//   //     console.log(document);
+//   //   });
+//   //   res.json(newItem);
+// });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

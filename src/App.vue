@@ -1,15 +1,15 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <v-btn text :to="{ name: 'Home' }">My closet</v-btn>
-      <v-btn text :to="{ name: 'Create' }">Add item</v-btn>
-      <v-btn text :to="{ name: 'Capsule' }">My capsule</v-btn>
-    </v-app-bar>
+	<v-app>
+		<v-app-bar app color="primary" dark>
+			<v-btn text :to="{ name: 'Home' }">My closet</v-btn>
+			<v-btn text :to="{ name: 'Create' }">Add item</v-btn>
+			<v-btn text :to="{ name: 'Capsule' }">My capsule</v-btn>
+		</v-app-bar>
 
-    <v-main>
-      <router-view> </router-view>
-    </v-main>
-  </v-app>
+		<v-main>
+			<router-view> </router-view>
+		</v-main>
+	</v-app>
 </template>
 
 <script>
@@ -35,15 +35,18 @@
  *
  * */
 
+//import db from "./mongoose";
+
 export default {
-  name: "App",
-
-  components: {
-    //  HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
+	name: "App",
+	components: {
+		//  HelloWorld,
+	},
+	data: () => ({
+		//
+	}),
+	created() {
+		// console.log("in app.vue", db);
+	},
 };
 </script>
