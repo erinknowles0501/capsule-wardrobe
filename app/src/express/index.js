@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("../mongoose");
+const ItemModel = require("../models/itemModel");
 
-db.once("open", (_) => {
-  console.log("Database connected");
-});
+db.once("open", () => {});
 
 const app = express();
 
@@ -23,21 +22,21 @@ app.use(
 
 // simple route
 app.get("/test", (req, res) => {
-  res.json({ message: "Welcome to application." });
-  //   const newItem = new ItemModel({
-  //     name: "sdgsdgsdg",
-  //     description: "msdfsdfsdfale",
-  //   });
-  //   newItem.save(function(error, document) {
-  //     if (error) console.error(error);
-  //     console.log(document);
-  //   });
-  //   res.json(newItem);
+  //res.json({ message: "Welcome to application." });
+  // const newItem = new ItemModel({
+  //   name: "sdgsdgsdg",
+  //   description: "msdfsdfsdfale",
+  // });
+  // newItem.save(function(error, document) {
+  //   if (error) console.error(error);
+  //   console.log(document);
+  // });
+  // res.json(newItem);
 });
 
-// app.get(/.*/, (req, res) =>
-//   res.sendFile(path.resolve(__dirname, "public/index.html"))
-// );
+app.get(/.*/, (req, res) =>
+  res.sendFile(path.resolve(__dirname, "public/index.html"))
+);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;

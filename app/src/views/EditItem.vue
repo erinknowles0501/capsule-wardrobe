@@ -53,7 +53,7 @@
 				>
 			</v-chip-group>
 
-			<v-select v-model="item.type" :items="types" />
+			<v-select label="Item type" v-model="item.type" :items="types" />
 
 			<v-checkbox v-model="item.isBase" label="Base item?" />
 
@@ -115,7 +115,6 @@ export default {
 	},
 	methods: {
 		async submitItem() {
-			console.log("yes hi!");
 			if (!this.$route.params.uid) {
 				// await db
 				// 	.collection("clothes")

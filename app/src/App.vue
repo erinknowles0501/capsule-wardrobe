@@ -36,7 +36,6 @@
  * */
 
 //import db from "./mongoose";
-import axios from "axios";
 
 export default {
 	name: "App",
@@ -48,14 +47,6 @@ export default {
 	}),
 	created() {
 		// console.log("in app.vue", db);
-		const instance = axios.create({ baseURL: "http://localhost:8000" });
-		instance
-			.get("/test")
-			.then(function (response) {
-				// handle success
-				console.log(response.data);
-			})
-			.catch((e) => console.log(e));
 	},
 };
 </script>

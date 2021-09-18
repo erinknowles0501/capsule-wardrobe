@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -11,4 +11,4 @@ const items = new Schema({
   isBase: Boolean,
 });
 
-export default mongoose.model("Items", items);
+module.exports = mongoose.model("Items", items);
