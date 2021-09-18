@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("../mongoose");
-const ItemModel = require("../models/itemModel");
+const db = require("./mongoose");
+const ItemModel = require("./models/itemModel");
 
 db.once("open", () => {});
 
@@ -34,9 +34,22 @@ app.get("/test", (req, res) => {
   // res.json(newItem);
 });
 
-app.get(/.*/, (req, res) =>
+app.get("/items", (req, res) =>
   res.sendFile(path.resolve(__dirname, "public/index.html"))
 );
+
+app
+  .route("/items/:uid")
+  .get((req, res) => console.log(("hello", req.params)))
+  .post((req, res) => res.json({ hello: "no" }));
+
+app.get("/closets/:uid", (req, res) =>
+  res.sendFile(path.resolve(__dirname, "public/index.html"))
+);
+
+// app.get(/.*/, (req, res) =>
+//   res.sendFile(path.resolve(__dirname, "public/index.html"))
+// );
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
