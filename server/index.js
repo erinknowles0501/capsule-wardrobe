@@ -8,7 +8,7 @@ db.once("open", () => {});
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8080",
+  origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));
@@ -34,9 +34,16 @@ app.get("/test", (req, res) => {
   // res.json(newItem);
 });
 
-app.get("/items", (req, res) =>
-  res.sendFile(path.resolve(__dirname, "public/index.html"))
-);
+const newItem = new ItemModel({
+  name: "sdgsdgsdg",
+  description: "msdfsdfsdfale",
+});
+newItem.save(function(error, document) {
+  if (error) console.error(error);
+  console.log(document);
+});
+
+app.get("/items", (req, res) => res.send(["hello", "yes!"]));
 
 app
   .route("/items/:uid")

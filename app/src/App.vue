@@ -34,8 +34,7 @@
  *    -
  *
  * */
-
-//import db from "./mongoose";
+import Store from "./store/store.js";
 
 export default {
 	name: "App",
@@ -43,9 +42,13 @@ export default {
 		//  HelloWorld,
 	},
 	data: () => ({
+		//store: CWStore,
 		//
 	}),
-	created() {
+	async created() {
+		const store = new Store();
+		await store.getItems();
+		console.log(store.items);
 		// console.log("in app.vue", db);
 	},
 };
