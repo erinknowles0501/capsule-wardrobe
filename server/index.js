@@ -43,12 +43,12 @@ newItem.save(function(error, document) {
   console.log(document);
 });
 
-app.get("/items", (req, res) => res.send(["hello", "yes!"]));
-
 app
-  .route("/items/:uid")
-  .get((req, res) => console.log(("hello", req.params)))
+  .route("/items")
+  .get((req, res) => res.send(["hello", "yes!"]))
   .post((req, res) => res.json({ hello: "no" }));
+
+app.route("/items/:uid").get((req, res) => console.log(("hello", req.params)));
 
 app.get("/closets/:uid", (req, res) =>
   res.sendFile(path.resolve(__dirname, "public/index.html"))

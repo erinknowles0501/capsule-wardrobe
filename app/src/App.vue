@@ -34,7 +34,7 @@
  *    -
  *
  * */
-import Store from "./store/store.js";
+import { storeInst, initializeStore } from "./brain/storeInst.js";
 
 export default {
 	name: "App",
@@ -46,7 +46,8 @@ export default {
 		//
 	}),
 	async created() {
-		const store = new Store();
+		initializeStore();
+		const store = storeInst;
 		await store.getItems();
 		console.log(store.items);
 		// console.log("in app.vue", db);

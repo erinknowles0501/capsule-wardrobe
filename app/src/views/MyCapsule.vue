@@ -1,6 +1,7 @@
 <template>
 	<v-container>
 		<h1>My Capsule</h1>
+		<v-btn @click="storeDump">Store</v-btn>
 		<v-sheet depressed v-if="!loading">
 			<draggable
 				:list="closet"
@@ -81,8 +82,9 @@
  * TODO NOTE: :remove-on-spill should have worked EXCEPT it wasn't removing the items from the list. Known bug. Keep an eye out for it being fixed.
  *
  * */
-// import db from "@/firebase/init";
+
 import draggable from "vuedraggable";
+import { storeInst } from "../brain/storeInst";
 
 export default {
 	components: {
@@ -128,6 +130,9 @@ export default {
 		this.loading = false;
 	},
 	methods: {
+		storeDump() {
+			console.log(storeInst);
+		},
 		isUsed(item) {
 			// TODO: Bonus points if you can do this with a reduce
 			return (
