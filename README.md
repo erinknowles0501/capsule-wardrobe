@@ -1,7 +1,3 @@
-would change:
-
-- put express and mongoose in different folder, not within the vue interface
-
 # capsule-wardrobe
 
 ## Project setup
