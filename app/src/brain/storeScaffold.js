@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api"; // Separates api interface from axios
 
 class Store {
   items = [];
@@ -8,6 +8,10 @@ class Store {
   async getItems() {
     const result = await api.getItems();
     this.items = result.data;
+  }
+
+  async upsertItem(item) {
+    await api.upsertItem(item);
   }
 }
 

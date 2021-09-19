@@ -2,7 +2,7 @@
 	<v-container>
 		<h1>Edit item</h1>
 
-		<v-form @submit.prevent="submitItem">
+		<v-form @submit.prevent="submitItem" v-if="!loading">
 			<v-text-field
 				label="Item name"
 				outlined
@@ -24,18 +24,22 @@
 				multiple
 				active-class="chip-active"
 			>
-				<v-chip class="chip" value="winter" color="light-blue lighten-4"
-					>Winter</v-chip
+				<v-chip
+					class="chip"
+					value="winter"
+					color="light-blue lighten-4"
 				>
-				<v-chip class="chip" value="spring" color="lime lighten-4"
-					>Spring</v-chip
-				>
-				<v-chip class="chip" value="summer" color="green lighten-4"
-					>Summer</v-chip
-				>
-				<v-chip class="chip" value="fall" color="orange lighten-4"
-					>Fall</v-chip
-				>
+					Winter
+				</v-chip>
+				<v-chip class="chip" value="spring" color="lime lighten-4">
+					Spring
+				</v-chip>
+				<v-chip class="chip" value="summer" color="green lighten-4">
+					Summer
+				</v-chip>
+				<v-chip class="chip" value="fall" color="orange lighten-4">
+					Fall
+				</v-chip>
 			</v-chip-group>
 
 			<v-chip-group
@@ -76,13 +80,15 @@
  *      - Mood tags (classy, comfy, sporty...)
  * */
 
-//import db from "@/firebase/init";
+import { storeInst } from "../brain/storeInst";
 // import { mdiAccount } from "@mdi/js";
 
 export default {
 	name: "edit-item",
 	data() {
 		return {
+			loading: false,
+
 			item: {
 				name: "",
 				description: "",
@@ -106,33 +112,23 @@ export default {
 	},
 	created() {
 		if (this.$route.params.uid) {
-			// 	db.collection("clothes")
-			// 		.doc(this.$route.params.uid)
-			// 		.get()
-			// 		.then((doc) => (this.item = doc.data()))
-			// 		.catch((error) => console.log("Error!", error));
+			this.item = storeInst.find(
+				(item) => item.uid === this.$route.params.uid
+			);
 		}
 	},
 	methods: {
 		async submitItem() {
+			this.loading = true; // so they can't play with the interface while waiting.
+
 			if (!this.$route.params.uid) {
-				// await db
-				// 	.collection("clothes")
-				// 	.add(this.item)
-				// 	.then(function (docRef) {
-				// 		console.log("Document written: ", docRef.id);
-				// 	})
-				// 	.catch(function (error) {
-				// 		console.error("Error adding document: ", error);
-				// 	});
-			} else {
-				//await db
-				// .collection("clothes")
-				// .doc(this.$route.params.uid)
-				// .set(this.item)
-				// .then(() => console.log("Success!"))
-				// .catch((error) => console.log("Error!", error));
+				// item is new. UID generation should happen on insert to mongoose, but we can
+				// fake our way around here
+				this.item.uid = "new" + String(Math.random()).slice(-5);
 			}
+
+			await storeInst.upsertItem(this.item); // TODO: error handling of course
+			this.loading = false;
 			this.$router.push({ name: "Home" });
 		},
 	},

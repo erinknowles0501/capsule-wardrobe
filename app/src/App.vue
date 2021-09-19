@@ -44,10 +44,15 @@ export default {
 	data: () => ({
 		//
 	}),
-	async created() {
+	created() {
 		initializeStore();
-		const store = storeInst;
-		await store.getItems();
+		this.getInfo();
+	},
+	methods: {
+		async getInfo() {
+			const store = storeInst;
+			await store.getItems();
+		},
 	},
 };
 </script>

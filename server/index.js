@@ -8,7 +8,9 @@ db.once("open", () => {});
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3001",
+  // TODO: get from env
+  //origin: "http://localhost:8000",
+  origin: "*",
 };
 
 app.use(cors(corsOptions));
@@ -20,20 +22,32 @@ app.use(
   })
 );
 
-const newItem = new Item({
-  name: "sdgsdgsdg",
-  description: "msdfsdfsdfale",
-});
-newItem.save(function(error, document) {
-  if (error) console.error(error);
-});
-
 app
   .route("/items")
-  .get(async (req, res) => res.send(await Item.find()))
-  .post((req, res) => res.json({ hello: "no" }));
+  .get(async (req, res) => res.json(await Item.find()))
+  .post((req, res) => {
+    const newItem = new Item({ ...req }); // TODO: Validation + error forwarding
+    newItem.save();
+  });
 
-app.route("/items/:uid").get((req, res) => console.log(("hello", req.params)));
+app
+  .route("/items/:uid")
+  .get(async (req, res) => {
+    res.json(await Item.find({ uid: req.params.uid }));
+  })
+  .post(async (req, res) => {
+    console.log("im here");
+    const item = await Item.updateOne(
+      { uid: req.params.uid },
+      { ...req.body },
+      { upsert: true }
+    );
+    console.log(item.n);
+    // .then((res) => console.log("server then", res))
+    // .catch((e) => console.log("server e", e)); // TODO: Validation + error forwarding
+    //console.log(item);
+    res.status(204);
+  });
 
 app.get("/closets/:uid", (req, res) =>
   res.sendFile(path.resolve(__dirname, "public/index.html"))
@@ -43,7 +57,6 @@ app.get("/closets/:uid", (req, res) =>
 //   res.sendFile(path.resolve(__dirname, "public/index.html"))
 // );
 
-// set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
