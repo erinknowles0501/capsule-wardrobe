@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./mongoose");
-const ItemModel = require("./models/itemModel");
+const Item = require("./models/itemModel");
 
 db.once("open", () => {});
 
@@ -20,32 +20,17 @@ app.use(
   })
 );
 
-// simple route
-app.get("/test", (req, res) => {
-  //res.json({ message: "Welcome to application." });
-  // const newItem = new ItemModel({
-  //   name: "sdgsdgsdg",
-  //   description: "msdfsdfsdfale",
-  // });
-  // newItem.save(function(error, document) {
-  //   if (error) console.error(error);
-  //   console.log(document);
-  // });
-  // res.json(newItem);
-});
-
-const newItem = new ItemModel({
+const newItem = new Item({
   name: "sdgsdgsdg",
   description: "msdfsdfsdfale",
 });
 newItem.save(function(error, document) {
   if (error) console.error(error);
-  console.log(document);
 });
 
 app
   .route("/items")
-  .get((req, res) => res.send(["hello", "yes!"]))
+  .get(async (req, res) => res.send(await Item.find()))
   .post((req, res) => res.json({ hello: "no" }));
 
 app.route("/items/:uid").get((req, res) => console.log(("hello", req.params)));

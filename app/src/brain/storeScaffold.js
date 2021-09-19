@@ -2,14 +2,12 @@ import api from "./api";
 
 class Store {
   items = [];
-  isNew = false;
 
-  constructor(isNew = false) {
-    this.isNew = isNew;
-  }
+  // TODO: Displaying errors if existing
 
   async getItems() {
-    this.items = await api.getItems();
+    const result = await api.getItems();
+    this.items = result.data;
   }
 }
 

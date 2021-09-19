@@ -39,18 +39,15 @@ import { storeInst, initializeStore } from "./brain/storeInst.js";
 export default {
 	name: "App",
 	components: {
-		//  HelloWorld,
+		//
 	},
 	data: () => ({
-		//store: CWStore,
 		//
 	}),
 	async created() {
 		initializeStore();
 		const store = storeInst;
 		await store.getItems();
-		console.log(store.items);
-		// console.log("in app.vue", db);
 	},
 };
 </script>
