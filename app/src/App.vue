@@ -1,6 +1,6 @@
 <template>
 	<v-app>
-		<v-app-bar app color="primary" dark>
+		<v-app-bar app color="primary" dark v-if="!!exposedStoreInst">
 			<v-btn text :to="{ name: 'Home' }">My closet</v-btn>
 			<v-btn text :to="{ name: 'Create' }">Add item</v-btn>
 			<v-btn text :to="{ name: 'Capsule' }">My capsule</v-btn>
@@ -42,10 +42,13 @@ export default {
 		//
 	},
 	data: () => ({
-		//
+		exposedStoreInst: storeInst,
 	}),
 	created() {
 		initializeStore();
+		console.log(storeInst);
+	},
+	mounted() {
 		this.getInfo();
 	},
 	methods: {

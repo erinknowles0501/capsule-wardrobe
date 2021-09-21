@@ -1,7 +1,12 @@
 import api from "./api"; // Separates api interface from axios
 
 class Store {
+  isInstantiated = false;
   items = [];
+
+  constructor() {
+    this.isInstantiated = true;
+  }
 
   // TODO: Displaying errors if existing
 

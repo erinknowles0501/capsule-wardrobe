@@ -128,6 +128,8 @@ export default {
 			}
 
 			await storeInst.upsertItem(this.item); // TODO: error handling of course
+			// TODO: On success
+			storeInst.getItems();
 			this.loading = false;
 			this.$router.push({ name: "Home" });
 		},

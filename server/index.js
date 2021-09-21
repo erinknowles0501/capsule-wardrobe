@@ -26,7 +26,7 @@ app
   .route("/items")
   .get(async (req, res) => res.json(await Item.find()))
   .post((req, res) => {
-    const newItem = new Item({ ...req }); // TODO: Validation + error forwarding
+    const newItem = new Item({ ...req.body }); // TODO: Validation + error forwarding
     newItem.save();
   });
 
@@ -36,13 +36,11 @@ app
     res.json(await Item.find({ uid: req.params.uid }));
   })
   .post(async (req, res) => {
-    console.log("im here");
     const item = await Item.updateOne(
       { uid: req.params.uid },
       { ...req.body },
       { upsert: true }
     );
-    console.log(item.n);
     // .then((res) => console.log("server then", res))
     // .catch((e) => console.log("server e", e)); // TODO: Validation + error forwarding
     //console.log(item);

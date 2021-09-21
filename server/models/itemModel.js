@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId, // this shouldn't be public (if id is 6, user might wonder what id==7 is)
-  uid: String, // this can be public
+  uid: String, // this is the public-facing identifier for the item (can't guess the next one from this one!)
   name: String,
   description: String,
-  seasons: Array,
-  moods: Array,
-  type: String,
+  typeId: { type: Schema.Types.ObjectId, ref: "Type" }, // FK to Type lookup table
   isBase: Boolean,
 });
+
+// TODO get item moods
+
+// TODO get item seasons
+
+// TODO get item capsule (?) will this be needed?
 
 module.exports = mongoose.model("Item", itemSchema);
