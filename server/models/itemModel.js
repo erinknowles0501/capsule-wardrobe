@@ -4,7 +4,7 @@ const itemSchema = new mongoose.Schema({
   uid: String, // this is the public-facing identifier for the item (can't guess the next one from this one!)
   name: String,
   description: String,
-  typeId: { type: Schema.Types.ObjectId, ref: "Type" }, // FK to Type lookup table
+  typeId: { type: mongoose.Schema.Types.ObjectId, ref: "Type" }, // FK to Type lookup table
   isBase: Boolean,
 });
 

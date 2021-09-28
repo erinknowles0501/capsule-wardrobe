@@ -1,13 +1,13 @@
 <template>
 	<v-app>
-		<v-app-bar app color="primary" dark v-if="!!exposedStoreInst">
+		<v-app-bar app color="primary" dark>
 			<v-btn text :to="{ name: 'Home' }">My closet</v-btn>
 			<v-btn text :to="{ name: 'Create' }">Add item</v-btn>
 			<v-btn text :to="{ name: 'Capsule' }">My capsule</v-btn>
 		</v-app-bar>
 
 		<v-main>
-			<router-view> </router-view>
+			<router-view v-if="!!canLoadPages"> </router-view>
 		</v-main>
 	</v-app>
 </template>
@@ -34,7 +34,7 @@
  *    -
  *
  * */
-import { storeInst, initializeStore } from "./brain/storeInst.js";
+import storeInst from "./brain/storeInst.js";
 
 export default {
 	name: "App",
@@ -44,17 +44,19 @@ export default {
 	data: () => ({
 		exposedStoreInst: storeInst,
 	}),
-	created() {
-		initializeStore();
-		console.log(storeInst);
-	},
 	mounted() {
 		this.getInfo();
 	},
+	computed: {
+		canLoadPages() {
+			return (
+				!!this.exposedStoreInst && !!this.exposedStoreInst.items.length
+			);
+		},
+	},
 	methods: {
 		async getInfo() {
-			const store = storeInst;
-			await store.getItems();
+			await storeInst.getItems();
 		},
 	},
 };

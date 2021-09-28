@@ -1,8 +1,7 @@
 <template>
 	<v-container>
 		<h1>My Capsule</h1>
-		<v-btn @click="storeDump">Store</v-btn>
-		<v-sheet depressed v-if="!loading">
+		<v-sheet depressed>
 			<draggable
 				:list="closet"
 				class="draggable draggable-closet display display-closet"
@@ -84,7 +83,7 @@
  * */
 
 import draggable from "vuedraggable";
-import { storeInst } from "../brain/storeInst";
+//import storeInst from "../brain/storeInst";
 
 export default {
 	components: {
@@ -92,7 +91,6 @@ export default {
 	},
 	data() {
 		return {
-			loading: true,
 			dragging: false,
 
 			capsule: {
@@ -105,34 +103,11 @@ export default {
 			closet: [],
 		};
 	},
-	async created() {
-		// await db
-		// 	.collection("clothes")
-		// 	.get()
-		// 	.then((snapshot) => {
-		// 		snapshot.forEach((doc) => {
-		// 			let item = doc.data();
-		// 			item.id = doc.id;
-		// 			this.closet.push(item);
-		// 		});
-		// 	});
-
-		// await db
-		// 	.collection("capsules")
-		// 	.doc("erin")
-		// 	.get()
-		// 	.then((doc) => {
-		// 		//  doc.data().fore
-		// 		this.capsule.spring = doc.data().spring;
-		// 	})
-		// 	.catch((err) => console.log("err", err));
-
-		this.loading = false;
+	mounted() {
+		// if (this.$route.params.uid) {
+		// }
 	},
 	methods: {
-		storeDump() {
-			console.log(storeInst);
-		},
 		isUsed(item) {
 			// TODO: Bonus points if you can do this with a reduce
 			return (
@@ -168,18 +143,6 @@ export default {
 			}
 
 			console.log(capsuleItems);
-
-			// db.collection("capsules")
-			// 	.doc("erin")
-			// 	.set({
-			// 		spring: capsuleItems.spring,
-			// 		summer: capsuleItems.summer,
-			// 		fall: capsuleItems.fall,
-			// 		winter: capsuleItems.winter,
-			// 		base: capsuleItems.base,
-			// 	})
-			// 	.then(() => console.log("Success"))
-			// 	.catch((err) => console.log("error", err));
 		},
 	},
 };

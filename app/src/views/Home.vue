@@ -4,7 +4,7 @@
 
 		<div class="closet">
 			<v-card outlined v-for="(item, index) in clothes" :key="index">
-				<v-img :src="`https://placekitten.com/20${index}/200`">
+				<v-img :src="`https://placekitten.com/200/200`">
 					<v-btn
 						small
 						color="white"
@@ -14,7 +14,7 @@
 						icon
 						:to="{ name: 'EditItem', params: { uid: item.uid } }"
 					>
-						?
+						<v-icon>{{ icons.info }}</v-icon>
 					</v-btn>
 				</v-img>
 				<v-card-title>{{ item.name }}</v-card-title>
@@ -25,15 +25,18 @@
 </template>
 
 <script>
-import { storeInst } from "../brain/storeInst";
+import { mdiInformation } from "@mdi/js";
+import storeInst from "../brain/storeInst.js";
 
 export default {
 	name: "Home",
 	data() {
 		return {
-			//loading: true,
-
 			clothes: [],
+
+			icons: {
+				info: mdiInformation,
+			},
 		};
 	},
 	mounted() {

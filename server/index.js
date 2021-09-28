@@ -9,8 +9,7 @@ const app = express();
 
 var corsOptions = {
   // TODO: get from env
-  //origin: "http://localhost:8000",
-  origin: "*",
+  origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));
@@ -47,7 +46,7 @@ app
     res.status(204);
   });
 
-app.get("/closets/:uid", (req, res) =>
+app.get("/capsules/:uid", (req, res) =>
   res.sendFile(path.resolve(__dirname, "public/index.html"))
 );
 

@@ -80,7 +80,7 @@
  *      - Mood tags (classy, comfy, sporty...)
  * */
 
-import { storeInst } from "../brain/storeInst";
+import storeInst from "../brain/storeInst";
 // import { mdiAccount } from "@mdi/js";
 
 export default {
