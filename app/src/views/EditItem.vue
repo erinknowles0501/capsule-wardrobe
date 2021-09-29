@@ -1,8 +1,8 @@
 <template>
 	<v-container>
-		<h1>Edit item</h1>
+		<h1>{{ isEditingItem ? "Edit item" : "Create item" }}</h1>
 
-		<v-form @submit.prevent="submitItem" v-if="!loading">
+		<v-form @submit.prevent="submitItem" v-if="!saving">
 			<v-text-field
 				label="Item name"
 				outlined
@@ -87,7 +87,7 @@ export default {
 	name: "edit-item",
 	data() {
 		return {
-			loading: false,
+			saving: false,
 
 			item: {
 				name: "",
@@ -111,15 +111,20 @@ export default {
 		};
 	},
 	created() {
-		if (this.$route.params.uid) {
-			this.item = storeInst.find(
+		if (this.isEditingItem) {
+			this.item = storeInst.items.find(
 				(item) => item.uid === this.$route.params.uid
 			);
 		}
 	},
+	computed: {
+		isEditingItem() {
+			return !!this.$route.params.uid;
+		},
+	},
 	methods: {
 		async submitItem() {
-			this.loading = true; // so they can't play with the interface while waiting.
+			this.saving = true; // so they can't play with the interface while waiting.
 
 			if (!this.$route.params.uid) {
 				// item is new. UID generation should happen on insert to mongoose, but we can
@@ -127,10 +132,12 @@ export default {
 				this.item.uid = "new" + String(Math.random()).slice(-5);
 			}
 
-			await storeInst.upsertItem(this.item); // TODO: error handling of course
-			// TODO: On success
-			storeInst.getItems();
-			this.loading = false;
+			await storeInst.upsertItem(this.item);
+			this.saving = false;
+
+			// Error and success noti handling happening in store.
+
+			await storeInst.getItems();
 			this.$router.push({ name: "Home" });
 		},
 	},

@@ -10,8 +10,8 @@ class StoreScaffold {
     this.items = result.data;
   }
 
-  async upsertItem(item) {
-    await api.upsertItem(item);
+  upsertItem(item) {
+    api.upsertItem(item);
   }
 }
 
