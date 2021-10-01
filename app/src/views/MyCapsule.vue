@@ -24,7 +24,7 @@
 
 		<v-sheet
 			depressed
-			v-for="(season, key) in capsule"
+			v-for="(season, key) in capsule.seasons"
 			:key="key"
 			:class="`season display-${key}`"
 		>
@@ -83,7 +83,7 @@
  * */
 
 import draggable from "vuedraggable";
-//import storeInst from "../brain/storeInst";
+import storeInst from "../brain/storeInst";
 
 export default {
 	components: {
@@ -94,29 +94,45 @@ export default {
 			dragging: false,
 
 			capsule: {
-				spring: [],
-				summer: [],
-				fall: [],
-				winter: [],
-				base: [],
+				uid: null,
+				seasons: {
+					spring: [],
+					summer: [],
+					fall: [],
+					winter: [],
+					base: [],
+				},
 			},
 			closet: [],
 		};
 	},
-	mounted() {
-		// if (this.$route.params.uid) {
-		// }
+	async mounted() {
+		this.closet = storeInst.items;
+		this.capsule.uid = this.$route.params.uid;
+		let tempCapsule = await storeInst.getCapsule(this.capsule.uid);
+		console.log(
+			"tempcapsule now!",
+			JSON.parse(JSON.stringify(tempCapsule))
+		);
+		Object.entries(tempCapsule.seasons).forEach(
+			([seasonName, seasonItems]) => {
+				console.log("seasonname", seasonName);
+				console.log("seasonitems", seasonItems);
+				seasonItems = seasonItems.filter((item) => !!item);
+				this.capsule.seasons[seasonName] = seasonItems;
+			}
+		);
+		console.log("tmpcapsule", tempCapsule);
+		//this.capsule = tempCapsule;
+		console.log("tis capsule", this.capsule);
 	},
 	methods: {
 		isUsed(item) {
 			// TODO: Bonus points if you can do this with a reduce
-			return (
-				this.capsule.winter.includes(item) ||
-				this.capsule.summer.includes(item) ||
-				this.capsule.fall.includes(item) ||
-				this.capsule.spring.includes(item) ||
-				this.capsule.base.includes(item)
-			);
+			const seasons = Object.values(this.capsule.seasons);
+			return seasons.reduce((doesInclude, season) => {
+				return season.includes(item) || doesInclude;
+			}, false);
 		},
 		checkDrop(e) {
 			console.log(e);
@@ -124,9 +140,8 @@ export default {
 				console.log("%c SAME", "color: red");
 			}
 		},
-		saveCapsule() {
-			console.log(this.capsule);
-
+		async saveCapsule() {
+			// TODO: move this save-parsing to store function
 			let capsuleItems = {
 				spring: [],
 				summer: [],
@@ -135,14 +150,19 @@ export default {
 				base: [],
 			};
 
-			for (const season in this.capsule) {
-				console.log(this.capsule[season]);
-				this.capsule[season].forEach((item) => {
-					capsuleItems[season].push(item.id);
+			for (const season in this.capsule.seasons) {
+				this.capsule.seasons[season].forEach((item) => {
+					capsuleItems[season].push(item._id);
 				});
 			}
-
-			console.log(capsuleItems);
+			console.log("heereee!");
+			await storeInst.saveCapsule({
+				uid: this.capsule.uid,
+				seasons: capsuleItems,
+			});
+			console.log("heer!");
+			this.capsule = await storeInst.getCapsule(this.capsule.uid);
+			console.log(this.capsule);
 		},
 	},
 };
@@ -198,7 +218,8 @@ export default {
 	background: lightgray;
 }
 
-.display-closet {
+.display-closet ::v-deep div {
+	cursor: default;
 }
 
 .capsule-item ::v-deep div {

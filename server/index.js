@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./mongoose");
+
 const Item = require("./models/itemModel");
+const Capsule = require("./models/capsuleModel");
 
 db.once("open", () => {});
 
@@ -46,9 +48,20 @@ app
     res.status(204);
   });
 
-app.get("/capsules/:uid", (req, res) =>
-  res.sendFile(path.resolve(__dirname, "public/index.html"))
-);
+app
+  .route("/capsules/:uid")
+  .get(async (req, res) => {
+    res.json(await Capsule.find({ uid: req.params.uid }).populate("item"));
+  })
+  .post(async (req, res) => {
+    const capsule = await Capsule.updateOne(
+      { uid: req.params.uid },
+      { ...req.body },
+      { upsert: true }
+    );
+    console.log("capsule post result", capsule);
+    res.status(204);
+  });
 
 // app.get(/.*/, (req, res) =>
 //   res.sendFile(path.resolve(__dirname, "public/index.html"))

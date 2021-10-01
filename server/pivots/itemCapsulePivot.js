@@ -5,4 +5,6 @@ const itemCapsulePivotSchema = new mongoose.Schema({
   capsuleId: { type: mongoose.Schema.Types.ObjectId, ref: "Capsule" },
 });
 
+itemCapsulePivotSchema.methods.getItemsInCapsule = function(uid) {};
+
 module.exports = mongoose.model("ItemCapsulePivot", itemCapsulePivotSchema);

@@ -10,8 +10,17 @@ class Api {
     return axiosInstance.get("/items");
   }
 
-  upsertItem(item) {
+  saveItem(item) {
     return axiosInstance.post(`/items/${item.uid}`, item);
+  }
+
+  getCapsule(uid) {
+    console.log("capsule??", axiosInstance.get(`/capsules/${uid}`));
+    return axiosInstance.get(`/capsules/${uid}`);
+  }
+
+  saveCapsule(capsule) {
+    return axiosInstance.post(`/capsules/${capsule.uid}`, capsule);
   }
 }
 

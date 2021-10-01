@@ -132,7 +132,7 @@ export default {
 				this.item.uid = "new" + String(Math.random()).slice(-5);
 			}
 
-			await storeInst.upsertItem(this.item);
+			await storeInst.saveItem(this.item);
 			this.saving = false;
 
 			// Error and success noti handling happening in store.

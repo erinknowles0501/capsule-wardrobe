@@ -18,7 +18,7 @@ const routes = [
     component: EditItem,
   },
   {
-    path: "/capsule",
+    path: "/capsule/:uid",
     name: "Capsule",
     component: MyCapsule,
   },

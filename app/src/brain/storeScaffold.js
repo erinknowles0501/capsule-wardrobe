@@ -10,8 +10,18 @@ class StoreScaffold {
     this.items = result.data;
   }
 
-  upsertItem(item) {
-    api.upsertItem(item);
+  saveItem(item) {
+    api.saveItem(item);
+  }
+
+  async getCapsule(uid) {
+    const result = await api.getCapsule(uid);
+    console.log("result!!", result.data[0]);
+    return result.data[0];
+  }
+
+  saveCapsule(capsule) {
+    return api.saveCapsule(capsule);
   }
 }
 
