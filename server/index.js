@@ -51,7 +51,31 @@ app
 app
   .route("/capsules/:uid")
   .get(async (req, res) => {
-    res.json(await Capsule.find({ uid: req.params.uid }).populate("item"));
+    // TODO: replace with virtual
+    const capsule = await Capsule.findOne({ uid: req.params.uid })
+      .populate({
+        path: "seasons",
+        populate: { path: "spring", model: "Item" },
+      })
+      .populate({
+        path: "seasons",
+        populate: { path: "summer", model: "Item" },
+      })
+      .populate({
+        path: "seasons",
+        populate: { path: "fall", model: "Item" },
+      })
+      .populate({
+        path: "seasons",
+        populate: { path: "winter", model: "Item" },
+      })
+      .populate({
+        path: "seasons",
+        populate: { path: "base", model: "Item" },
+      })
+      .populate("user");
+    console.log(JSON.stringify(capsule));
+    res.json(capsule);
   })
   .post(async (req, res) => {
     const capsule = await Capsule.updateOne(
@@ -59,7 +83,6 @@ app
       { ...req.body },
       { upsert: true }
     );
-    console.log("capsule post result", capsule);
     res.status(204);
   });
 

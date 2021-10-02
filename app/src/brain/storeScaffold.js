@@ -16,8 +16,8 @@ class StoreScaffold {
 
   async getCapsule(uid) {
     const result = await api.getCapsule(uid);
-    console.log("result!!", result.data[0]);
-    return result.data[0];
+    console.log("result!!", result.data);
+    return result.data;
   }
 
   saveCapsule(capsule) {

@@ -15,7 +15,7 @@ class Api {
   }
 
   getCapsule(uid) {
-    console.log("capsule??", axiosInstance.get(`/capsules/${uid}`));
+    // console.log("capsule??", await axiosInstance.get(`/capsules/${uid}`));
     return axiosInstance.get(`/capsules/${uid}`);
   }
 
