@@ -11,16 +11,32 @@ class Api {
   }
 
   saveItem(item) {
-    return axiosInstance.post(`/items/${item.uid}`, item);
+    return axiosInstance.post(`/items/${item._id || "new"}`, item);
+  }
+
+  deleteItem(id) {
+    console.log("api id");
+    return axiosInstance.delete(`/items/${id}`);
   }
 
   getCapsule(uid) {
-    // console.log("capsule??", await axiosInstance.get(`/capsules/${uid}`));
     return axiosInstance.get(`/capsules/${uid}`);
   }
 
   saveCapsule(capsule) {
     return axiosInstance.post(`/capsules/${capsule.uid}`, capsule);
+  }
+
+  getMoods() {
+    return axiosInstance.get("/moods");
+  }
+
+  getTypes() {
+    return axiosInstance.get("/types");
+  }
+
+  getSeasons() {
+    return axiosInstance.get("/seasons");
   }
 }
 

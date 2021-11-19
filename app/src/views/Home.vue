@@ -4,20 +4,21 @@
 
 		<div class="closet">
 			<v-card outlined v-for="(item, index) in clothes" :key="index">
-				<v-img :src="`https://placekitten.com/200/200`">
-					<v-btn
-						small
-						color="white"
-						absolute
-						bottom
-						right
-						icon
-						:to="{ name: 'EditItem', params: { uid: item.uid } }"
-					>
-						<v-icon>{{ icons.info }}</v-icon>
-					</v-btn>
-				</v-img>
-				<v-card-title>{{ item.name }}</v-card-title>
+				<!-- <v-img :src="`https://placekitten.com/200/200`"> -->
+				<v-btn
+					color="blue"
+					absolute
+					bottom
+					right
+					fab
+					icon
+					class="mr-n4 mb-2"
+					:to="{ name: 'EditItem', params: { uid: item.uid } }"
+				>
+					<v-icon large>{{ icons.info }}</v-icon>
+				</v-btn>
+				<!-- </v-img> -->
+				<v-card-title class="item-title">{{ item.name }}</v-card-title>
 				<v-card-subtitle>{{ item.description }}</v-card-subtitle>
 			</v-card>
 		</div>
@@ -50,5 +51,9 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-gap: 0.75em;
+}
+
+.item-title {
+	word-break: break-word !important;
 }
 </style>

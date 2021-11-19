@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
+const Moods = require("../lookups/moodsLookup");
+const Types = require("../lookups/typesLookup");
+const Seasons = require("../lookups/seasonsLookup");
 
 const itemSchema = new mongoose.Schema({
-  uid: String, // this is the public-facing identifier for the item (can't guess the next one from this one!)
   name: String,
   description: String,
-  typeId: { type: mongoose.Schema.Types.ObjectId, ref: "Type" }, // FK to Type lookup table
-  isBase: Boolean,
+  moods: [{ type: mongoose.Schema.Types.ObjectId, ref: "Moods" }],
+  type: { type: mongoose.Schema.Types.ObjectId, ref: "Types" },
+  seasons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Seasons" }],
 });
-
-// TODO get item moods
 
 // TODO get item seasons
 

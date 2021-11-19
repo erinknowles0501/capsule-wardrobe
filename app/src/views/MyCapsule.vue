@@ -30,6 +30,7 @@
 		>
 			<v-card flat class="season-info subtitle-2">
 				<p>{{ key }}</p>
+				<!-- todo: v-for from item types. Also Base might not need this? -->
 				<p>
 					<b>tops:</b>
 					{{ season.filter((item) => item.type === "top").length }}
@@ -110,21 +111,12 @@ export default {
 		this.closet = storeInst.items;
 		this.capsule.uid = this.$route.params.uid;
 		let tempCapsule = await storeInst.getCapsule(this.capsule.uid);
-		console.log(
-			"tempcapsule now!",
-			JSON.parse(JSON.stringify(tempCapsule))
-		);
 		Object.entries(tempCapsule.seasons).forEach(
 			([seasonName, seasonItems]) => {
-				console.log("seasonname", seasonName);
-				console.log("seasonitems", seasonItems);
 				seasonItems = seasonItems.filter((item) => !!item);
 				this.capsule.seasons[seasonName] = seasonItems;
 			}
 		);
-		console.log("tmpcapsule", tempCapsule);
-		//this.capsule = tempCapsule;
-		console.log("tis capsule", this.capsule);
 	},
 	methods: {
 		isUsed(item) {
@@ -155,14 +147,11 @@ export default {
 					capsuleItems[season].push(item._id);
 				});
 			}
-			console.log("heereee!");
 			await storeInst.saveCapsule({
 				uid: this.capsule.uid,
 				seasons: capsuleItems,
 			});
-			console.log("heer!");
 			this.capsule = await storeInst.getCapsule(this.capsule.uid);
-			console.log(this.capsule);
 		},
 	},
 };

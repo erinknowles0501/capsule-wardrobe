@@ -4,8 +4,17 @@ const db = require("./mongoose");
 
 const Item = require("./models/itemModel");
 const Capsule = require("./models/capsuleModel");
+const User = require("./models/userModel");
 
-db.once("open", () => {});
+const Moods = require("./lookups/moodsLookup");
+const Types = require("./lookups/typesLookup");
+const Seasons = require("./lookups/seasonsLookup");
+
+db.once("open", () => {
+  Moods.seed();
+  Types.seed();
+  Seasons.seed();
+});
 
 const app = express();
 
@@ -23,28 +32,49 @@ app.use(
   })
 );
 
+/**
+ *  TODO: Validation + error forwarding.
+ * */
+
 app
   .route("/items")
-  .get(async (req, res) => res.json(await Item.find()))
+  .get(async (req, res) =>
+    res.json(
+      await Item.find()
+        .populate("Moods")
+        .populate("Types")
+        .populate("Seasons")
+    )
+  )
   .post((req, res) => {
-    const newItem = new Item({ ...req.body }); // TODO: Validation + error forwarding
+    const newItem = new Item({ ...req.body });
     newItem.save();
   });
 
 app
   .route("/items/:uid")
   .get(async (req, res) => {
-    res.json(await Item.find({ uid: req.params.uid }));
+    console.log("gettubg uten");
+    res.json(
+      await Item.find({ id: req.params.uid })
+        .populate("moods")
+        .populate("type")
+        .populate("seasons")
+    );
   })
   .post(async (req, res) => {
-    const item = await Item.updateOne(
-      { uid: req.params.uid },
-      { ...req.body },
-      { upsert: true }
+    console.log("posting item");
+    console.log(req.body);
+    await Item.updateOne(
+      req.params.uid !== "new" ? { id: req.params.uid } : {},
+      { ...req.body }
     );
-    // .then((res) => console.log("server then", res))
-    // .catch((e) => console.log("server e", e)); // TODO: Validation + error forwarding
-    //console.log(item);
+    res.status(204);
+  })
+  .delete(async (req, res) => {
+    console.log("deleting item");
+    const hello = await Item.deleteOne({ id: req.params.uid });
+    console.log(hello);
     res.status(204);
   });
 
@@ -85,6 +115,18 @@ app
     );
     res.status(204);
   });
+
+app.get("/moods", async (req, res) => {
+  res.json(await Moods.find());
+});
+
+app.get("/types", async (req, res) => {
+  res.json(await Types.find());
+});
+
+app.get("/seasons", async (req, res) => {
+  res.json(await Seasons.find());
+});
 
 // app.get(/.*/, (req, res) =>
 //   res.sendFile(path.resolve(__dirname, "public/index.html"))

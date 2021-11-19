@@ -11,7 +11,11 @@ class StoreScaffold {
   }
 
   saveItem(item) {
-    api.saveItem(item);
+    return api.saveItem(item);
+  }
+
+  deleteItem(id) {
+    api.deleteItem(id);
   }
 
   async getCapsule(uid) {
@@ -22,6 +26,21 @@ class StoreScaffold {
 
   saveCapsule(capsule) {
     return api.saveCapsule(capsule);
+  }
+
+  async getMoods() {
+    const moods = await api.getMoods();
+    return moods.data;
+  }
+
+  async getTypes() {
+    const types = await api.getTypes();
+    return types.data;
+  }
+
+  async getSeasons() {
+    const seasons = await api.getSeasons();
+    return seasons.data;
   }
 }
 
